@@ -1,7 +1,7 @@
 variable "environment" { #aquí se define una variable llamada "environment", que es de tipo string, y tiene una descripción y un valor por defecto, en este caso el valor por defecto es "staging"
   type        = string
-  description = "el tipo de entorno"
-  default     = "staging"
+  description = "el tipo de entorno name (dev, prod, staging)"
+  default     = "dev"
 }
 
 variable "storage_disk" { #aquí se define una variable llamada "storage_disk", que es de tipo number, y tiene una descripción y un valor por defecto, en este caso el valor por defecto es 40

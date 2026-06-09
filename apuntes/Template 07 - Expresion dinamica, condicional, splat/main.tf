@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 resource "azurerm_network_security_group" "rg" {
-  name                = "example-nsg"
+  name                = (var.environment == "dev" ? dev-nsg : stage-nsg) #aqui usamos una expresion condicional para definir el nombre de la regla de seguridad https://developer.hashicorp.com/terraform/language/expressions/conditionals
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
