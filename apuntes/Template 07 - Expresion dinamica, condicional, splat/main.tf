@@ -1,10 +1,10 @@
 resource "azurerm_resource_group" "rg" {
   name     = "example-resources"
-  location = "West Europe"
+  location = "spaincentral"
 }
 
 resource "azurerm_network_security_group" "rg" {
-  name                = "acceptanceTestSecurityGroup1"
+  name                = "example-nsg"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
@@ -12,7 +12,7 @@ resource "azurerm_network_security_group" "rg" {
     for_each = local.nsg_rules #esto sirve para iterar cada uno de los elementos que tenemos en el local
     content {
       name                       = security_rule.key                          #aqui se define el nombre de la regla dentro de local sería nuestro allow-http, allow-https
-      priority                   = security_rule.value.priority               #aqui se define la prioridad de la regla
+      priority                   = security_rule.value.priority               #aqui se define la prioridad de la regla es un mapa anidado
       direction                  = "Inbound"                                  #aqui se define la dirección de la regla
       access                     = "Allow"                                    #aqui se define el acceso de la regla
       protocol                   = "Tcp"                                      #aqui se define el protocolo de la regla
@@ -22,18 +22,6 @@ resource "azurerm_network_security_group" "rg" {
       destination_address_prefix = "*"
       description                = security_rule.value.description
     }
-  }
-
-  security_rule {
-    name                       = "test123"
-    priority                   = 100
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Tcp"
-    source_port_range          = "*"
-    destination_port_range     = "*"
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
   }
 
   tags = {
