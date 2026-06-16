@@ -69,10 +69,10 @@ variable "vm_config" {
   }
 }
 
-#variable "nombre_storage" {
-#  type = list(string) 
-#  default = ["templatestorage12" ,"templatestorage13"]
-#}
+variable "nombre_storage" {
+  type    = list(string) #set es una estructura de datos desordenada que no puede contener elementos duplicados, y se accede a los elementos por índice, utilizando la función element() o la sintaxis de corchetes []
+  default = ["templatestorage12", "templatestorage13", "templatestorage14"]
+}
 
 variable "for_each_nombre_storage" {
   type    = set(string)

@@ -4,7 +4,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 resource "azurerm_network_security_group" "rg" {
-  name                = (var.environment == "dev" ? dev-nsg : stage-nsg) #aqui usamos una expresion condicional para definir el nombre de la regla de seguridad https://developer.hashicorp.com/terraform/language/expressions/conditionals
+  name                = (var.environment == "dev" ? "dev-nsg" : "stage-nsg") #aqui usamos una expresion condicional para definir el nombre de la regla de seguridad https://developer.hashicorp.com/terraform/language/expressions/conditionals
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
@@ -27,4 +27,20 @@ resource "azurerm_network_security_group" "rg" {
   tags = {
     environment = "Production"
   }
+}
+
+output "env" {
+  value = var.environment
+}
+
+output "demo" {
+  value = [for count in local.nsg_rules : count.description] #splat expression (un truco para sacar el valor de un mapa o array)
+}
+
+#output "splat" {
+#  value = local.nsg_rules[*].allow_http.description #forma mas facil de sacar el valor de un mapa o array sin usar for. con el punto solo sacamos el valor del conjunto de toda esa regla. 
+#}
+
+output "splat" {
+  value = var.nombre_storage[0] #splat expression para sacar el valor de un set
 }
