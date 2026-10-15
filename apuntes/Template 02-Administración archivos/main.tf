@@ -4,6 +4,10 @@ terraform {
         source  = "hashicorp/azurerm"
         version = "~> 4.65.0"
         }
+# version = "4.65.0" → solo exactamente 4.65.0.
+# version = ">= 4.65.0" → cualquier versión igual o superior (incluye 5.x).
+# version = "~> 4.65" → >= 4.65.0 y < 5.0.0 (permite cualquier 4.x >=4.65.0).
+# version = "~> 4.65.0" → >= 4.65.0 y < 4.66.0 (tu caso).
   }
 # Ejemplo de mircrosft de en donde se tiene que guardar el backen : https://learn.microsoft.com/es-es/azure/developer/terraform/store-state-in-azure-storage?tabs=azure-cli
     backend "azurerm" {
