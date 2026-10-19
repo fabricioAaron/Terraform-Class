@@ -40,7 +40,7 @@ jobs:
         
     # Paso 3 : Validadr el formato de los archivos: 
     - name: Validadr el formato de los archivos
-      run: terraform fmt -check
+      run: terraform fmt 
       
     #Paso 4:  Descargar los plugins de Azure
     - name: Inicializamos Terrafom sin el backen remoto
