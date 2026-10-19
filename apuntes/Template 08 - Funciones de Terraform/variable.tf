@@ -31,3 +31,18 @@ variable "allowed_ports" {
   default = "80, 443, 3306"
 
 }
+
+variable "environment" {
+  type        = string
+  description = "environment name"
+  validation {
+    condition     = contains(["dev", "staging", "prod"], var.environment) #estas variables sirve para 
+    error_message = "Ingresar un entorno valido como 'dev', 'staging' o 'prod'"
+  }
+}
+
+
+variable "vm_size" {
+  type = map(string)
+
+}

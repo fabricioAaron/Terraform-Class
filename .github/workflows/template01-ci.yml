@@ -1,0 +1,51 @@
+name: "Template 01"
+
+# En donde se va ejecutar en que raiz: 
+
+on:
+  push:
+    branches: ["main"]
+#Filtro: solo se activa si se hace algún cambio dentro del template 01
+    paths:
+      - 'apuntes/Template 01-Storage/**'
+      - '.github/workflows/template01-ci.yml'
+
+  pull_request:
+    branches: ['main']
+    paths:
+      - 'apuntes/Template 01-Storage/**'
+
+# Definimos los trabajos a ejecutar
+jobs:
+  terraform-check:
+    name: "Validate Terraform"
+    #Define el sistema operativo donde se va a ejecutar 
+    runs-on: ubuntu-latest
+  # Indicamos que todos los comandos 'run' se ejecuten dentro de la carpeta del template
+    defaults:
+      run:
+        working-directory: './apuntes/Template 01-Storage'
+
+    steps:
+       # Paso 1: Clonar tu repositorio dentro de la máquina virtual de GitHub
+    - name: Descargar el codigo del repositorio
+      uses: actions/checkout@v4 # Verifica la ultima version disponible en el navegador 
+      
+      #Paso2 : Instalar el binario de TF en l mv
+
+    - name: Instalar Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: "1.14.0"
+        
+    # Paso 3 : Validadr el formato de los archivos: 
+    - name: Validadr el formato de los archivos
+      run: terraform fmt -check
+      
+    #Paso 4:  Descargar los plugins de Azure
+    - name: Inicializamos Terrafom sin el backen remoto
+      run: terraform init -backend=false
+      
+    #Paso 5: Validar la sintaxis del codigo 
+    - name: Validar la sintaxis del codigo
+      run: terraform validate

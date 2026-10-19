@@ -101,5 +101,46 @@ output "storage_name" {
 
 ## Function Focus: `split, join`
 
-esta funciones sirve para dividir y unir. Lo que se hará es separar una lista de puertos en un formato específico para la documentación. 
+Estas funciones sirven para dividir (split) un string en una lista y para unir (join) una lista en un solo string.
 
+En nuestro `main.tf` utilizamos `split` para separar un string de puertos (separados por comas) en una lista real. Esto nos sirve para iterar sobre esa lista y crear configuraciones específicas, como reglas de red:
+
+```hcl
+locals {
+  # split toma un separador (",") y el string a dividir (var.allowed_ports)
+  formatted_ports = split(",", var.allowed_ports)
+  
+  # Iteramos con un bucle for sobre la lista resultante para generar una estructura de reglas
+  nsg_rules = [for port in local.formatted_ports : {
+    name        = "port-${port}"
+    port        = port
+    description = " allowed traffic on port : ${port}"
+    }
+  ]
+}
+```
+
+Si quisiéramos hacer lo inverso y unir una lista de elementos en un solo string, usaríamos `join`. Por ejemplo, para unir nuestra lista de puertos usando un guión:
+
+```hcl
+locals {
+  # join toma el separador ("-") y la lista a unir (local.formatted_ports)
+  joined_ports = join("-", local.formatted_ports)
+}
+```
+
+Finalmente, usamos un output en `main.tf` para ver el resultado de cómo estructuramos las reglas gracias al uso previo de `split`:
+
+```hcl
+output "nsg" {
+  value = local.nsg_rules
+}
+```
+
+
+# Assignment 5: Resource Lookup
+
+Function Focus: lookup
+
+Scenario:
+Implement environment configuration mapping with fallback values.
